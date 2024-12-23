@@ -5,11 +5,6 @@ import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { createTask } from '@/utils/createTask'
-
-function onSubmit(values: z.infer<typeof formSchema>) {
-	createTask(values.taskName, values.taskDescription)
-}
 
 const formSchema = z
 	.object({
@@ -38,7 +33,7 @@ export function FormComponent() {
 			<h3 className="text-xl font-medium text-center">Create a new task</h3>
 			<Form {...form} control={form.control}>
 				<form
-					onSubmit={form.handleSubmit(onSubmit)}
+					onSubmit={form.handleSubmit(() => console.log('working on it'))}
 					className="mt-2 mb-4 flex flex-col items-center bg-neutral-900 p-4 rounded-lg border-2 border-neutral-700"
 				>
 					<div className=" flex flex-row justify-center gap-x-4 mb-4 w-full">

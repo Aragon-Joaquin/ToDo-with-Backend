@@ -1,14 +1,16 @@
 import { debounce } from '@/utils/debounce'
 import { Input } from '../ui/input'
-import { ChangeEvent } from 'react'
-import { useGetTasks } from '@/hooks/getTasks'
+import { ChangeEvent, useContext } from 'react'
+import { TasksContext } from '@/context/utils/TaskContext'
 
 export function FilterTask() {
-	const { setFilter } = useGetTasks(null)
+	const {
+		getTask: { setGETPetition }
+	} = useContext(TasksContext)
 
 	const handleFilter = (e: ChangeEvent<HTMLInputElement>) => {
 		e.preventDefault()
-		setFilter({ Category: 'name', Value: e.target.value })
+		// setGETPetition({ filter: { Category: 'name', Value: e.target.value } })
 	}
 
 	return (

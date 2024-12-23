@@ -1,9 +1,14 @@
 import TableShadcn from './components/table/TableShadcn'
-import { useGetTasks } from './hooks/getTasks'
 import { FormComponent } from './components/form/Form.component'
+import { useContext } from 'react'
+import { TasksContext } from './context/utils/TaskContext'
 
 function App() {
-	const { response } = useGetTasks({ endpoint: 'tasks' })
+	const {
+		getTask: { setGETPetition, response }
+	} = useContext(TasksContext)
+
+	// setGETPetition(undefined)
 
 	return (
 		<main className="flex flex-col w-3/4 xl:w-1/2 mx-auto">

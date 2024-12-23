@@ -1,7 +1,9 @@
 import { taskProps } from '@/lib/types'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table'
-import { useGetTasks } from '@/hooks/getTasks'
+
 import { MANAGE_DATES } from '@/utils/constants'
+import { useContext } from 'react'
+import { TasksContext } from '@/context/utils/TaskContext'
 
 const HEADER_CATEGORIES = ['ID', 'Name', 'Description', 'Status', 'Created at', 'Finished at']
 
@@ -14,7 +16,9 @@ function returnStatusTable(title: string) {
 }
 
 export default function TableShadcn({ tasks }: { tasks: taskProps[] }) {
-	const { isPending } = useGetTasks(null)
+	const {
+		getTask: { isPending }
+	} = useContext(TasksContext)
 
 	return (
 		<Table>
