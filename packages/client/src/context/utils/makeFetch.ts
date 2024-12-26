@@ -1,6 +1,6 @@
 import { URL_DATABASE } from '@/utils/constants'
 
-type HTTPMethod = { method: 'GET' } | { method: 'POST'; body: { name: string; description?: string } }
+export type HTTPMethod = { method: 'GET' } | { method: 'POST'; body: { name: string; description: string | '' } }
 
 export async function makeTaskPetition(HTTPMethod: HTTPMethod) {
 	if (HTTPMethod.method === 'GET') {

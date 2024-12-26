@@ -8,6 +8,7 @@ import './index.css'
 
 createRoot(document.getElementById('root')!).render(
 	<StrictMode>
+		{/* //! this is useless */}
 		<TaskConsumer>
 			<App />
 		</TaskConsumer>

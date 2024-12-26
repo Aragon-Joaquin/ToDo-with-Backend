@@ -3,8 +3,9 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { Button } from '@/components/ui/button'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card'
 
 const formSchema = z
 	.object({
@@ -29,42 +30,49 @@ export function FormComponent() {
 	})
 
 	return (
-		<div>
-			<h3 className="text-xl font-medium text-center">Create a new task</h3>
-			<Form {...form} control={form.control}>
-				<form
-					onSubmit={form.handleSubmit(() => console.log('working on it'))}
-					className="mt-2 mb-4 flex flex-col items-center bg-neutral-900 p-4 rounded-lg border-2 border-neutral-700"
-				>
-					<div className=" flex flex-row justify-center gap-x-4 mb-4 w-full">
+		<Card className="">
+			<CardHeader>
+				<CardTitle>Create a new task</CardTitle>
+				<CardDescription>Add a new task to your list</CardDescription>
+			</CardHeader>
+			<CardContent>
+				<Form {...form} control={form.control}>
+					<form
+						onSubmit={form.handleSubmit(() => console.log('working on it'))}
+						className="mt-2 gap-y-4 flex flex-col items-center"
+					>
 						<FieldFormComponent
 							taskName="taskName"
 							taskTitle="Title"
 							placeholder="Wash the dishes, do house chores... "
+							description="Add a name to your task"
 						/>
 						<FieldFormComponent
 							taskName="taskDescription"
 							taskTitle="Description"
 							placeholder="Buy groceries tomorrow, visit grandma at the park... "
+							description="Add a description to your task"
 						/>
-					</div>
-					<Button type="submit" className="px-6 bg-neutral-800 hover:bg-neutral-700">
-						Submit
-					</Button>
-				</form>
-			</Form>
-		</div>
+						<Button type="submit" className="px-6">
+							Submit
+						</Button>
+					</form>
+				</Form>
+			</CardContent>
+		</Card>
 	)
 }
 
 function FieldFormComponent({
 	taskName,
 	taskTitle,
-	placeholder
+	placeholder,
+	description
 }: {
 	taskName: string
 	taskTitle: string
 	placeholder: string
+	description: string
 }) {
 	return (
 		<FormField
@@ -76,6 +84,7 @@ function FieldFormComponent({
 						<Input placeholder={placeholder} {...field} />
 					</FormControl>
 					<FormMessage />
+					<FormDescription>{description}</FormDescription>
 				</FormItem>
 			)}
 		/>

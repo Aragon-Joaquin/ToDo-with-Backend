@@ -1,15 +1,15 @@
-import { useGetTasks } from './hooks/getTasks'
 import { ReactElement, ReactNode } from 'react'
 import { TasksContext } from './utils/TaskContext'
+import { useTasks } from '@/context/hooks/useTasks'
 
 export function TaskConsumer({ children }: { children: ReactElement | ReactNode }) {
-	const { setGETPetition, response, isPending } = useGetTasks()
+	const { setOptionsInfo, response, isPending } = useTasks()
 
 	return (
 		<TasksContext.Provider
 			value={{
-				getTask: {
-					setGETPetition,
+				getTasks: {
+					setOptionsInfo,
 					response,
 					isPending
 				}

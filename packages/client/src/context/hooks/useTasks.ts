@@ -3,19 +3,19 @@ import { taskProps } from '@/lib/types'
 import { filterProps } from '../types'
 import { makeTaskPetition } from '../utils/makeFetch'
 
-export function useGetTasks() {
+export function useTasks() {
 	const [isPending, startTransition] = useTransition()
 	const [response, setResponse] = useState<taskProps[]>([])
 
-	const [GETPetition, setGETPetition] = useState<filterProps>()
+	const [optionsInfo, setOptionsInfo] = useState<filterProps>()
 
-	console.log('too much renders', GETPetition)
 	useEffect(() => {
 		//@ts-expect-error: error in ts, documentation says it's an action
 		startTransition(async () => {
-			const data: taskProps[] = await makeTaskPetition({ method: 'GET' })
-			if (GETPetition?.filterBy?.Value && GETPetition?.filterBy.Value.length > 0) {
-				const { filterBy } = GETPetition
+			if (optionsInfo?.HTTPMethod == null) return
+			const data: taskProps[] = await makeTaskPetition(optionsInfo.HTTPMethod)
+			if (optionsInfo?.filterBy?.Value && optionsInfo?.filterBy.Value.length > 0) {
+				const { filterBy } = optionsInfo
 				return setResponse(
 					data.filter((task) => {
 						const filterByCat = task[filterBy.Category]?.toString().toLowerCase()
@@ -25,11 +25,11 @@ export function useGetTasks() {
 			}
 			return setResponse(data)
 		})
-	}, [GETPetition])
+	}, [optionsInfo])
 
 	return {
 		response,
 		isPending,
-		setGETPetition
+		setOptionsInfo
 	}
 }

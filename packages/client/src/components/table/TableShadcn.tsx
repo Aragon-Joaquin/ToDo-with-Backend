@@ -2,8 +2,7 @@ import { taskProps } from '@/lib/types'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table'
 
 import { MANAGE_DATES } from '@/utils/constants'
-import { useContext } from 'react'
-import { TasksContext } from '@/context/utils/TaskContext'
+import { useTaskContext } from '@/hooks/useContext.hook'
 
 const HEADER_CATEGORIES = ['ID', 'Name', 'Description', 'Status', 'Created at', 'Finished at']
 
@@ -17,12 +16,12 @@ function returnStatusTable(title: string) {
 
 export default function TableShadcn({ tasks }: { tasks: taskProps[] }) {
 	const {
-		getTask: { isPending }
-	} = useContext(TasksContext)
+		getTasks: { isPending }
+	} = useTaskContext()
 
 	return (
 		<Table>
-			<TableHeader>
+			<TableHeader className="bg-zinc-500/20 hover:brightness-125 border-2 border-zinc-800">
 				<TableRow className="align-middle">
 					{HEADER_CATEGORIES.map((category) => {
 						return (
@@ -34,7 +33,7 @@ export default function TableShadcn({ tasks }: { tasks: taskProps[] }) {
 				</TableRow>
 			</TableHeader>
 
-			<TableBody>
+			<TableBody className="border-x-2 border-b-2 border-zinc-800">
 				{isPending && returnStatusTable('Loading...')}
 				{tasks.length > 0
 					? tasks.map(({ id, name, description, status, createdAt, finishedAt }) => {
