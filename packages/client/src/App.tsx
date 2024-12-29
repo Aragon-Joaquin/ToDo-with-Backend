@@ -9,7 +9,7 @@ function App() {
 	} = useTaskContext()
 
 	useEffect(() => {
-		setOptionsInfo({ HTTPMethod: { method: 'GET' } })
+		setOptionsInfo({})
 	}, [setOptionsInfo])
 
 	return (

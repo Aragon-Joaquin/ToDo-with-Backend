@@ -2,8 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { CreateTaskDto } from './dto/createTask';
 import { getTasksQuery } from './dto/task.interface';
-import e from 'express';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
+import { UpdateTaskDto } from './dto/updateTask';
 
 @Injectable()
 export class TasksService {
@@ -26,14 +25,44 @@ export class TasksService {
   }
 
   async createTask(task: CreateTaskDto) {
-    try {
-      return await this.prisma.tasks.create({
-        data: { ...task, createdAt: new Date(), status: false },
-      });
-    } catch (error) {
-      if (error instanceof PrismaClientKnownRequestError) {
-        throw new HttpException('Task already exists', HttpStatus.CONFLICT);
-      }
-    }
+    const user = await this.prisma.tasks.findUnique({
+      where: { name: task.name },
+    });
+    if (user)
+      throw new HttpException(
+        'Tasks with this name already exists',
+        HttpStatus.CONFLICT,
+      );
+
+    return await this.prisma.tasks.create({
+      data: { ...task, createdAt: new Date(), status: false },
+    });
+  }
+
+  async updateTask(task: UpdateTaskDto, id: number) {
+    const user = await this.prisma.tasks.findUnique({ where: { id } });
+    if (!user)
+      throw new HttpException(
+        'ID Task does not exists in the database',
+        HttpStatus.BAD_REQUEST,
+      );
+
+    return await this.prisma.tasks.update({
+      where: { id },
+      data: task,
+    });
+  }
+
+  async deleteTask(id: number) {
+    const user = await this.prisma.tasks.findUnique({ where: { id } });
+    if (!user)
+      throw new HttpException(
+        'ID Task does not exists in the database',
+        HttpStatus.BAD_REQUEST,
+      );
+
+    return await this.prisma.tasks.delete({
+      where: { id },
+    });
   }
 }

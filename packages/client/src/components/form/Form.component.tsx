@@ -6,6 +6,8 @@ import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card'
+import { useTaskContext } from '@/hooks/useContext.hook'
+import { METHODS_VERBS } from '@/context/types.d'
 
 const formSchema = z
 	.object({
@@ -21,6 +23,10 @@ const formSchema = z
 	.required({ taskName: true })
 
 export function FormComponent() {
+	const {
+		nonGetHttpMethod: { setHTTPCall }
+	} = useTaskContext()
+
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -29,18 +35,22 @@ export function FormComponent() {
 		}
 	})
 
+	const onSubmit = (values: z.infer<typeof formSchema>) => {
+		setHTTPCall({
+			method: METHODS_VERBS.POST,
+			body: { name: values.taskName, description: values?.taskDescription || '' }
+		})
+	}
+
 	return (
-		<Card className="">
+		<Card>
 			<CardHeader>
 				<CardTitle>Create a new task</CardTitle>
 				<CardDescription>Add a new task to your list</CardDescription>
 			</CardHeader>
 			<CardContent>
 				<Form {...form} control={form.control}>
-					<form
-						onSubmit={form.handleSubmit(() => console.log('working on it'))}
-						className="mt-2 gap-y-4 flex flex-col items-center"
-					>
+					<form onSubmit={form.handleSubmit(onSubmit)} className="mt-2 gap-y-4 flex flex-col items-center">
 						<FieldFormComponent
 							taskName="taskName"
 							taskTitle="Title"
